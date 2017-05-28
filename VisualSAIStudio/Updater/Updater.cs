@@ -14,7 +14,7 @@ namespace VisualSAIStudio.Updater
     {
         public Update()
         {
-            if (Properties.Settings.Default.AcceptedUpdates == false)
+            /*if (Properties.Settings.Default.AcceptedUpdates == false)
             {
 
                     DialogResult res =
@@ -36,12 +36,12 @@ namespace VisualSAIStudio.Updater
                     }
                     Properties.Settings.Default.AcceptedUpdates = true;                    
                     Properties.Settings.Default.Save();
-            }
+            }*/
         }
 
         public async void AsyncCheckForUpdates()
         {
-            using (var client = new HttpClient())
+            /*using (var client = new HttpClient())
             {
                 var values = new Dictionary<string, string>
                 {
@@ -101,7 +101,7 @@ namespace VisualSAIStudio.Updater
 
 
 
-            }
+            }*/
         }
         private static Update instance;
         public static Update GetInstance()

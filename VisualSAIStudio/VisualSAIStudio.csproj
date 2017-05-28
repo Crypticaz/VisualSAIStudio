@@ -33,10 +33,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -108,7 +109,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DB\DBCConfig.cs" />
+    <Compile Include="DB\DBCViewer\BinaryFormatter.cs" />
+    <Compile Include="DB\DBCViewer\Extensions.cs" />
+    <Compile Include="DB\DBCViewer\FilterExpressions.cs" />
+    <Compile Include="DB\DBCViewer\FilterOptions.cs" />
+    <Compile Include="DB\DBCViewer\MyDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DB\DBCViewer\Readers\ADBReader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DB3Reader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DB4Reader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DB5Reader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DB6Reader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DBCConfig.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DBCReaderGeneric.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DBReaderFactory.cs" />
+    <Compile Include="DB\DBCViewer\PluginInterface\IPlugin.cs" />
+    <Compile Include="DB\DBCViewer\PluginInterface\IWowClientDBReader.cs" />
+    <Compile Include="DB\DBCViewer\PluginInterface\TableDefinition.cs" />
+    <Compile Include="DB\DBCViewer\Readers\STLReader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\WDBReader.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,10 +257,9 @@
     <Compile Include="SmartScripts\Events\EVENT_LINK.cs" />
     <Compile Include="SmartScripts\SAIType.cs" />
     <Compile Include="SmartScripts\SmartEventsCollection.cs" />
-    <Compile Include="DB\BinaryFormatExtensions.cs" />
-    <Compile Include="DB\DB2Reader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DB2Reader.cs" />
     <Compile Include="DB\DBConnect.cs" />
-    <Compile Include="DB\DBCReader.cs" />
+    <Compile Include="DB\DBCViewer\Readers\DBCReader.cs" />
     <Compile Include="Scratch\DrawableContainerElement.cs" />
     <Compile Include="Scratch\DrawableElement.cs" />
     <Compile Include="Scratch\DrawableElementsCollection.cs" />

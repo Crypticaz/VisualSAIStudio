@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VisualSAIStudio.SmartScripts;
-
+using PluginInterface;
 
 namespace VisualSAIStudio
 {
@@ -92,7 +92,7 @@ namespace VisualSAIStudio
                 }
             }
 
-            CurrentAction(this, new LoadingEventArgs("area triggers"));
+            /*CurrentAction(this, new LoadingEventArgs("area triggers"));
             dbString.Add(StorageType.AreaTrigger, new ClientDataDBC("AreaTrigger.dbc", 
                     delegate(BinaryReader br,Dictionary<int, string> strings )
                     {
@@ -108,7 +108,7 @@ namespace VisualSAIStudio
                         return sb.ToString();
                     }            
                 ));
-            dbString.Add(StorageType.AreaTriggerWithSAI, new ClientDataDB<string>("entry", "ScriptName", "areatrigger_scripts", "ScriptName = \"SmartTrigger\""));
+            dbString.Add(StorageType.AreaTriggerWithSAI, new ClientDataDB<string>("entry", "ScriptName", "areatrigger_scripts", "ScriptName = \"SmartTrigger\""));*/
 
             CurrentAction(this, new LoadingEventArgs("game events"));
             dbString.Add(StorageType.GameEvent, new ClientDataDB<string>("EventEntry", "description", "game_event"));
@@ -123,6 +123,7 @@ namespace VisualSAIStudio
                 Properties.Settings.Default.Save();
             }
 
+            Properties.Settings.Default.DBCVersion = "24015";
             if (!string.IsNullOrEmpty(Properties.Settings.Default.DBCVersion))
             {
                 foreach (StorageType type in dbc_config[Properties.Settings.Default.DBCVersion].offsets.Keys)
@@ -130,7 +131,9 @@ namespace VisualSAIStudio
                     if (dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].unsupported)
                         continue;
                     CurrentAction(this, new LoadingEventArgs(type.ToString()));
-                    dbString.Add(type, new ClientDataDBC(dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].file, dbc_config[Properties.Settings.Default.DBCVersion].offsets[type].offset));
+
+                    var config = dbc_config[Properties.Settings.Default.DBCVersion].offsets[type];
+                    dbString.Add(type, new ClientDataDBC(config.file, config.idOffset, config.nameOffset, this));
                 }
             }
 
@@ -138,6 +141,11 @@ namespace VisualSAIStudio
 
 
             FinishedLoading(this, new EventArgs());
+        }
+
+        public void SetCurrentAction(string action)
+        {
+            CurrentAction(this, new LoadingEventArgs(action));
         }
 
         public StorageType StorageForType(SAIType type, bool guid)
@@ -166,11 +174,12 @@ namespace VisualSAIStudio
             {
                 if (!File.Exists(Properties.Settings.Default.DBC + "\\" + dbc_config[dbc_version].offsets[StorageType.Spell].file))
                     break;
-                IWowClientDBReader m_reader;
-                m_reader = new DBCReader(Properties.Settings.Default.DBC + "\\" + dbc_config[dbc_version].offsets[StorageType.Spell].file);
-                BinaryReader br = m_reader[0];
+
+                string fileName = Properties.Settings.Default.DBC + "\\" + dbc_config[dbc_version].offsets[StorageType.Spell].file;
+                IClientDBReader m_reader = DBReaderFactory.GetReader(fileName);
+                BinaryReader br = m_reader.Rows.ElementAt(0);
                 int id = br.ReadInt32();
-                for (int i = 0; i < dbc_config[dbc_version].offsets[StorageType.Spell].offset; i++)
+                for (int i = 0; i < dbc_config[dbc_version].offsets[StorageType.Spell].nameOffset; i++)
                     br.ReadInt32();
 
                 id =br.ReadInt32();
@@ -382,45 +391,81 @@ namespace VisualSAIStudio
 
     public class ClientDataDBC : ClientData<string>
     {
-        public ClientDataDBC(string filename, int fields_to_skip)
+        public ClientDataDBC(string filename, int id_fields_to_skip, int name_fields_to_skip, DB db = null)
         {
-            Load(filename,
-                delegate(BinaryReader br,Dictionary<int, string> strings )
-                {
-                    string name = "";
-                    if (fields_to_skip >= 0)
-                    {
-                        for (int j = 0; j < fields_to_skip; ++j)
-                        {
-                            br.ReadInt32();
-                        }
-                        name = strings[br.ReadInt32()];
-                    }
-                    return name;
-                }
-            );
+            _db = db;
+            _id_fields_to_skip = id_fields_to_skip;
+            _name_fields_to_skip = name_fields_to_skip;
+
+            Load(filename);
         }
-        public ClientDataDBC(string filename, Func<BinaryReader,Dictionary<int, string>, string> func)
+        public ClientDataDBC(string filename, int id_name_to_skip, Func<BinaryReader,Dictionary<int, string>, List<ColumnMeta>, Tuple<Int32, string>> func)
         {
             Load(filename, func);
         }
-        private void Load(string filename, Func<BinaryReader, Dictionary<int, string>, string> func)
+        private void Load(string filename, Func<BinaryReader, Dictionary<int, string>, List<ColumnMeta>, Tuple<Int32, string>> func = null)
         {
             if (!File.Exists(Properties.Settings.Default.DBC + "\\" + filename))
                 return;
-            IWowClientDBReader m_reader;
-            if (filename.Contains(".dbc"))
-                m_reader = new DBCReader(Properties.Settings.Default.DBC + "\\" + filename);
-            else
-                m_reader = new DB2Reader(Properties.Settings.Default.DBC + "\\" + filename);
+            IClientDBReader m_reader = DBReaderFactory.GetReader(Properties.Settings.Default.DBC + "\\" + filename);
 
-            for (int i = 0; i < m_reader.RecordsCount; ++i)
+            if (m_reader.StringTable != null)
             {
-                BinaryReader br = m_reader[i];
-                int id = br.ReadInt32();
-                values[id] = func(br, m_reader.StringTable);
+                int i = 0;
+                foreach (var br in m_reader.Rows) // Add rows
+                {
+                    List<ColumnMeta> meta = null;
+
+                    if (m_reader is DB5Reader)
+                        meta = (m_reader as DB5Reader).Meta;
+
+                    if (m_reader is DB6Reader)
+                        meta = (m_reader as DB6Reader).Meta;
+
+                    Tuple<Int32, string> idAndName;
+                    if (func != null)
+                        idAndName = func(br, m_reader.StringTable, meta);
+                    else
+                        idAndName = defaultFunc(br, m_reader.StringTable, meta);
+
+                    values[idAndName.Item1] = idAndName.Item2;
+
+                    if (i % 10000 == 0)
+                        _db.SetCurrentAction(filename + " (" + ++i + "/" + m_reader.RecordsCount + ")");
+                }
             }
         }
+
+        private Tuple<Int32, string> defaultFunc(BinaryReader br, Dictionary<int, string> strings, List<ColumnMeta> meta)
+        {
+            int maxOffset = _id_fields_to_skip > _name_fields_to_skip ? _id_fields_to_skip : _name_fields_to_skip;
+
+            Int32 id = 0;
+            string name = "";
+
+            if (maxOffset >= 0)
+            {
+                Int32 stringId = 0;
+
+                for (int j = 0; j <= maxOffset; ++j)
+                {
+                    Int32 tempVal = br.ReadInt32(meta?[j]);
+
+                    if (j == _id_fields_to_skip)
+                        id = tempVal;
+                    else if (j == _name_fields_to_skip)
+                        stringId = tempVal;
+                }
+
+                if (stringId != 0)
+                    name = strings[stringId];
+            }
+            return new Tuple<Int32, string>(id, name);
+        }
+
+        private int _id_fields_to_skip;
+        private int _name_fields_to_skip;
+        private DB _db;
     }
 
 }

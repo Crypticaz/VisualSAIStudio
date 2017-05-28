@@ -1,18 +1,16 @@
-﻿using DBCViewer;
+﻿using PluginInterface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Text;
 
-//by tomrus88
-//https://github.com/tomrus88/dbcviewer/
-
-namespace VisualSAIStudio
+namespace DBCViewer
 {
-    class DB2Reader : IWowClientDBReader
+    class DB2Reader : IClientDBReader
     {
         private const int HeaderSize = 48;
-        private const uint DB2FmtSig = 0x32424457;          // WDB2
+        public const uint DB2FmtSig = 0x32424457;          // WDB2
 
         public int RecordsCount { get; private set; }
         public int FieldsCount { get; private set; }
@@ -23,28 +21,34 @@ namespace VisualSAIStudio
 
         private byte[][] m_rows;
 
-        public byte[] GetRowAsByteArray(int row)
+        public IEnumerable<BinaryReader> Rows
         {
-            return m_rows[row];
+            get
+            {
+                for (int i = 0; i < RecordsCount; ++i)
+                {
+                    yield return new BinaryReader(new MemoryStream(m_rows[i]), Encoding.UTF8);
+                }
+            }
         }
 
-        public BinaryReader this[int row]
-        {
-            get { return new BinaryReader(new MemoryStream(m_rows[row]), Encoding.UTF8); }
-        }
+        public bool IsSparseTable { get { return false; } }
+        public string FileName { get; private set; }
 
         public DB2Reader(string fileName)
         {
-            using (var reader = BinaryReaderExtensions.FromFile(fileName))
+            FileName = fileName;
+
+            using (var reader = Extensions.FromFile(fileName))
             {
                 if (reader.BaseStream.Length < HeaderSize)
                 {
-                    throw new InvalidDataException(String.Format("File {0} is corrupted!", fileName));
+                    throw new InvalidDataException(string.Format("File {0} is corrupted!", fileName));
                 }
 
                 if (reader.ReadUInt32() != DB2FmtSig)
                 {
-                    throw new InvalidDataException(String.Format("File {0} isn't valid DBC file!", fileName));
+                    throw new InvalidDataException(string.Format("File {0} isn't valid DBC file!", fileName));
                 }
 
                 RecordsCount = reader.ReadInt32();
@@ -87,6 +91,11 @@ namespace VisualSAIStudio
                     StringTable[index] = reader.ReadStringNull();
                 }
             }
+        }
+
+        public void Save(DataTable table, Table def, string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }
