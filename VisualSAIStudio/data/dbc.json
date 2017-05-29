@@ -1,40 +1,58 @@
 {
+	"24015": {
+		"version": 24015,
+		"definition": "Legion 7.2",
+		"offsets": {
+    			"Spell": 		{"file": "Spell.db2", 		"nameOffset": 0,  "idOffset": 5},
+    			"Area": 		{"file": "AreaTable.db2",	"nameOffset": 3,  "idOffset": 0},
+    			"Map": 			{"file": "Map.db2", 		"nameOffset": 0,  "idOffset": 0},
+    			"Item": 		{"file": "ItemSparse.db2", 	"nameOffset": 34, "idOffset": 0},
+    			"Movie": 		{"file": "Movie.db2",       "nameOffset": 0,  "idOffset": 0},
+    			"Class": 		{"file": "ChrClasses.db2", 	"nameOffset": 1,  "idOffset": 18},
+    			"Race": 		{"file": "ChrRaces.db2", 	"nameOffset": 3,  "idOffset": 0},
+    			"Achievement": 	{"file": "Achievement.db2", "nameOffset": 0,  "idOffset": 13},
+    			"CreatureType": {"file": "CreatureType.db2","nameOffset": 1,  "idOffset": 0},
+    			"Phase": 		{"file": "Phase.db2", 		"nameOffset": 0,  "idOffset": 0},
+    			"Emote": 		{"file": "Emotes.db2", 		"nameOffset": 1,  "idOffset": 0},
+    			"Skill": 		{"file": "SkillLine.db2", 	"nameOffset": 1,  "idOffset": 0}    
+		}
+	},
 	"15595": {
 		"version": 15595,
 		"definition": "Cataclysm 4.3.4",
 		"offsets": {
-    			"Spell": {"file": "spell.dbc", "offset": 20},
-    			"Area": {"file": "AreaTable.dbc", "offset": 10},
-    			"Map": {"file": "Map.dbc", "offset": 0},
-    			"Item": {"file": "item-sparse.db2", "offset": 98},
-    			"Sound": {"file": "SoundEntries.dbc", "offset": 1},
-    			"Movie": {"file": "movie.dbc", "offset": 0},
-    			"Class": {"file": "chrClasses.dbc", "offset": 2},
-    			"Race": {"file": "chrRaces.dbc", "offset": 10},
-    			"Achievement": {"file": "achievement.dbc", "offset": 3},
-    			"CreatureType": {"file": "CreatureType.dbc", "offset": 0},
-    			"Phase": {"file": "Phase.dbc", "offset": 0},
-    			"Emote": {"file": "Emotes.dbc", "offset": 0},
-    			"Skill": {"file": "SkillLine.dbc", "offset": 1}    
+    			"Spell": {"file": "spell.dbc", "nameOffset": 20, "idOffset": 0},
+    			"Area": {"file": "AreaTable.dbc", "nameOffset": 10, "idOffset": 0},
+    			"Map": {"file": "Map.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Item": {"file": "item-sparse.db2", "nameOffset": 98, "idOffset": 0},
+    			"Sound": {"file": "SoundEntries.dbc", "nameOffset": 1, "idOffset": 0},
+    			"Movie": {"file": "movie.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Class": {"file": "chrClasses.dbc", "nameOffset": 2, "idOffset": 0},
+    			"Race": {"file": "chrRaces.dbc", "nameOffset": 10, "idOffset": 0},
+    			"Achievement": {"file": "achievement.dbc", "nameOffset": 3, "idOffset": 0},
+    			"CreatureType": {"file": "CreatureType.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Phase": {"file": "Phase.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Emote": {"file": "Emotes.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Skill": {"file": "SkillLine.dbc", "nameOffset": 1, "idOffset": 0}    
 		}
 	},
 	"12340": {
 		"version": 12340,
 		"definition": "Wrath of The Lich King 3.3.5",
 		"offsets": {
-    			"Spell": {"file": "spell.dbc", "offset": 135},
-    			"Area": {"file": "AreaTable.dbc", "offset": 10},
-    			"Map": {"file": "Map.dbc", "offset": 0},
-    			"Item": {"file": "ItemDisplayInfo.dbc", "offset": 4},
-    			"Sound": {"file": "SoundEntries.dbc", "offset": 1},
-    			"Movie": {"file": "movie.dbc", "offset": 0},
-    			"Class": {"file": "chrClasses.dbc", "offset": 3},
-    			"Race": {"file": "chrRaces.dbc", "offset": 10},
-    			"Achievement": {"file": "achievement.dbc", "offset": 20},
-    			"CreatureType": {"file": "CreatureType.dbc", "offset": 0},
+    			"Spell": {"file": "spell.dbc", "nameOffset": 135, "idOffset": 0},
+    			"Area": {"file": "AreaTable.dbc", "nameOffset": 10, "idOffset": 0},
+    			"Map": {"file": "Map.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Item": {"file": "ItemDisplayInfo.dbc", "nameOffset": 4, "idOffset": 0},
+    			"Sound": {"file": "SoundEntries.dbc", "nameOffset": 1, "idOffset": 0},
+    			"Movie": {"file": "movie.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Class": {"file": "chrClasses.dbc", "nameOffset": 3, "idOffset": 0},
+    			"Race": {"file": "chrRaces.dbc", "nameOffset": 10, "idOffset": 0},
+    			"Achievement": {"file": "achievement.dbc", "nameOffset": 20, "idOffset": 0},
+    			"CreatureType": {"file": "CreatureType.dbc", "nameOffset": 0, "idOffset": 0},
     			"Phase": {"unsupported": true},
-    			"Emote": {"file": "Emotes.dbc", "offset": 0},
-    			"Skill": {"file": "SkillLine.dbc", "offset": 2}    
+    			"Emote": {"file": "Emotes.dbc", "nameOffset": 0, "idOffset": 0},
+    			"Skill": {"file": "SkillLine.dbc", "nameOffset": 2, "idOffset": 0}    
 		}
 	}
 }
