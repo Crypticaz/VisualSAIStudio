@@ -30,7 +30,7 @@ namespace VisualSAIStudio
         public void LoadAll()
         {
             CurrentAction(this, new LoadingEventArgs("quests"));
-            dbString.Add(StorageType.Quest, new ClientDataDB<string>("title", "quest_template"));
+            dbString.Add(StorageType.Quest, new ClientDataDB<string>("LogTitle", "quest_template"));
 
             CurrentAction(this, new LoadingEventArgs("creatures"));
             dbString.Add(StorageType.Creature, new ClientDataDB<string>("entry", "name", "creature_template"));
