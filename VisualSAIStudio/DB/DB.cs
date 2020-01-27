@@ -123,7 +123,6 @@ namespace VisualSAIStudio
                 Properties.Settings.Default.Save();
             }
 
-            Properties.Settings.Default.DBCVersion = "24015";
             if (!string.IsNullOrEmpty(Properties.Settings.Default.DBCVersion))
             {
                 foreach (StorageType type in dbc_config[Properties.Settings.Default.DBCVersion].offsets.Keys)
@@ -425,10 +424,16 @@ namespace VisualSAIStudio
                     Tuple<Int32, string> idAndName;
                     if (func != null)
                         idAndName = func(br, m_reader.StringTable, meta);
+                    else if (m_reader is DBCReader || m_reader is DB2Reader)
+                    {
+                        int id = br.ReadInt32();
+                        values[id] = dbcFunc(br, m_reader.StringTable);
+                    }
                     else
+                    {
                         idAndName = defaultFunc(br, m_reader.StringTable, meta);
-
-                    values[idAndName.Item1] = idAndName.Item2;
+                        values[idAndName.Item1] = idAndName.Item2;
+                    }
 
                     if (i % 10000 == 0)
                         _db.SetCurrentAction(filename + " (" + ++i + "/" + m_reader.RecordsCount + ")");
@@ -461,6 +466,20 @@ namespace VisualSAIStudio
                     name = strings[stringId];
             }
             return new Tuple<Int32, string>(id, name);
+        }
+
+        private string dbcFunc(BinaryReader br, Dictionary<int, string> strings)
+        {
+            string name = "";
+            if (_name_fields_to_skip >= 0)
+            {
+                for (int j = 0; j < _name_fields_to_skip; ++j)
+                {
+                    br.ReadInt32();
+                }
+                name = strings[br.ReadInt32()];
+            }
+            return name;
         }
 
         private int _id_fields_to_skip;
