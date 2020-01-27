@@ -69,6 +69,10 @@
                 "type": "Parameter",
                 "required": true,
                 "name": "Maximum distance"
+            },
+            {
+                "type": "Parameter",
+                "name": "Number of target (0 = all targets)"
             }
         ],
         "description": "{pram1value:choose(0):Any creature|Creature {pram1}} in {pram2} - {pram3} yards"

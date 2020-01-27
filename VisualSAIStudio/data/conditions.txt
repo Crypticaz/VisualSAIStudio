@@ -5,6 +5,9 @@ Quest
  Has quest taken,CONDITION_QUESTTAKEN
  Has quest completed,CONDITION_QUEST_COMPLETE
  Has quest never taken,CONDITION_QUEST_NONE
+ Has daily quest done,CONDITION_DAILY_QUEST_DONE
+ Has quest with state,CONDITION_QUESTSTATE
+ Has quest objective progess,CONDITION_QUEST_OBJECTIVE_COMPLETE
 Map and area
  Is in map,CONDITION_MAPID
  Is in area,CONDITION_AREAID
@@ -26,6 +29,7 @@ Auras
  Has aura,CONDITION_AURA
 Player
  Has achievement,CONDITION_ACHIEVEMENT
+ Has RealmAchievement,CONDITION_REALM_ACHIEVEMENT
  Has title,CONDITION_TITLE
  Has item,CONDITION_ITEM
  Has item equipped,CONDITION_ITEM_EQUIPPED
@@ -35,6 +39,8 @@ Player
  Has skill value for skill,CONDITION_SKILL
  Is drunk,CONDITION_DRUNKENSTATE
  Has spell learned,CONDITION_SPELL
+ Is in water,CONDITION_IN_WATER
+ Is on taxi,CONDITION_TAXI
 Distance
  Is near creature,CONDITION_NEAR_CREATURE
  Is near gameobject,CONDITION_NEAR_GAMEOBJECT
@@ -48,3 +54,6 @@ Misc
  Is in phase,CONDITION_PHASEID
  Is in relation,CONDITION_RELATION_TO
  Reaction to,CONDITION_REACTION_TO
+ Stand state,CONDITION_STAND_STATE
+ Is charmed,CONDITION_CHARMED
+ Has pet with pettype,CONDITION_PET_TYPE

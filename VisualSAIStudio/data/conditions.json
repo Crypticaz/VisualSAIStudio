@@ -692,28 +692,154 @@
 	      "type": "SwitchParameter",
 	      "name": "Comparison",
 		  "values": {
-			    "0": {"name": "equals (=)"},
+			  "0": {"name": "equals (=)"},
 				"1": {"name": "higher than (>)"},
 				"2": {"name": "lower than (<)"},
 				"3": {"name": "higher or equals (>=)"},
 				"4": {"name": "lower or equals (<=)"}
-		  },
-	    },
+		    }
+	    }
 	  ],
 	  "description": "If {target}'s HP {pram2value:choose(0|1|2|3|4):=|>|<|>=|<=} {pram1}%"
 	},
 
 	{
-	  "id": 39,
-	  "name": "CONDITION_TERRAIN_SWAP",
-	  "parameters": [
-	    {
-	      "type": "Parameter",
-	      "name": "Terrain Swap",
-	      "description": "To explain"
-	    },
-	  ],
-	  "description": "If {target} in terrain swap {pram1}"
-	}
+		"id": 39,
+		"name": "CONDITION_REALM_ACHIEVEMENT",
+		"parameters": [
+			{
+				"type": "AchievementParameter",
+				"name": "Achievement",
+				"description": "RealmAchievement"
+			}
+		],
+		"description": "If {target} earns RealmAchievement {pram1}"
+	},
 
+	{
+		"id": 40,
+		"name": "CONDITION_IN_WATER",
+		"description": "If {target} is in water"
+	},
+
+	{
+		"id": 41,
+		"name": "CONDITION_TERRAIN_SWAP",
+		"parameters": [
+			{
+				"type": "Parameter",
+				"name": "Terrain Swap",
+				"description": "To explain"
+			}
+		],
+		"description": "If {target} in terrain swap {pram1}"
+	},
+
+	{
+		"id": 42,
+		"name": "CONDITION_STAND_STATE",
+		"parameters": [
+			{
+				"type": "SwitchParameter",
+				"name": "StateType",
+				"values": {
+					"0": { "name": "exact" },
+					"1": { "name": "any" }
+				}
+			},
+			{
+				"type": "SwitchParameter",
+				"name": "State",
+				"values": {
+					"0": { "name": "Standing" },
+					"1": { "name": "Sitting" }
+				}
+			}
+		],
+		"description": "If {target}'s stand state is {pram1value:choose(0|1):exact|any} of state {pram2}%"
+	},
+
+	{
+		"id": 43,
+		"name": "CONDITION_DAILY_QUEST_DONE",
+		"parameters": [
+			{
+				"type": "QuestParameter",
+				"name": "Daily Quest",
+				"description": "Daily Quest"
+			}
+		],
+		"description": "If {target} has done daily quest wiht ID: {pram1}"
+	},
+
+	{
+		"id": 44,
+		"name": "CONDITION_CHARMED",
+		"description": "If {target} is charmed"
+	},
+
+	{
+		"id": 45,
+		"name": "CONDITION_PET_TYPE",
+		"parameters": [
+			{
+				"type": "Parameter",
+				"name": "Mask",
+				"description": "PetType mask"
+			}
+		],
+		"description": "If {target} is pet with typemask: {pram1}"
+	},
+
+	{
+		"id": 46,
+		"name": "CONDITION_TAXI",
+		"description": "If {target} is on taxi"
+	},
+
+	{
+		"id": 47,
+		"name": "CONDITION_QUESTSTATE",
+		"parameters": [
+			{
+				"type": "QuestParameter",
+				"name": "QuestID",
+				"description": "QuestID"
+			},
+			{
+				"type": "FlagParameter",
+				"name": "QuestState",
+				"values": {
+					"1": { "name": "Not Taken" },
+					"2": { "name": "Completed" },
+					"8": { "name": "In Progress" },
+					"32": { "name": "Failed" },
+					"64": { "name": "Rewarded" }
+				}
+			}
+		],
+		"description": "If {target} has quest with statemask {pram1}"
+	},
+
+	{
+		"id": 48,
+		"name": "CONDITION_QUEST_OBJECTIVE_COMPLETE",
+		"parameters": [
+			{
+				"type": "QuestParameter",
+				"name": "QuestID"
+			},
+			{
+				"type": "Parameter",
+				"name": "ObjectiveIndex",
+				"description": "3.3.5 only: index of objective"
+			},
+			{
+				"type": "Parameter",
+				"name": "ObjectiveProgress",
+				"description": "3.3.5 only: counter/progress of objective"
+			}
+		],
+		"description": "If {target} has reached the specified {pram3} quest progress for objectiveIndex: {pram2} for the specified quest: {pram1}"
+	},
 ]

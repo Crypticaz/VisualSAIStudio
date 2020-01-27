@@ -1500,7 +1500,7 @@
 
     {
         "id": 85,
-        "name": "SMART_ACTION_INVOKER_CAST",
+        "name": "SMART_ACTION_SELF_CAST",
         "parameters": [
             {
                 "type": "SpellParameter",
@@ -1509,9 +1509,13 @@
             {
                 "type": "CastFlagsParameter",
                 "name": "Cast Flags"
+            },
+            {
+                "type": "Parameter",
+                "name": "Triggered Flags"
             }
         ],
-        "description": "Invoker: Cast spell {pram1} to {target}"
+        "description": "Cast spell {pram1} to themself"
     },
 
     {
@@ -2794,6 +2798,142 @@
             }
         ],
         "description": "{target}: Stops playing scene with Id: {pram1}"
+    },
+    
+    {
+        "id": 131,
+        "name": "SMART_ACTION_SPAWN_SPAWNGROUP",
+        "parameters": [
+            {
+                "type": "Parameter",
+                "name": "GroupID"
+            },
+            {
+                "type": "Parameter",
+                "name": "minDelay"
+            },
+            {
+                "type": "Parameter",
+                "name": "maxDelay"
+            },
+            {
+                "type": "Parameter",
+                "name": "spawnflags"
+            }
+        ],
+        "description": "{target}: Stops playing scene with Id: {pram1}"
+    },
+        
+    {
+        "id": 132,
+        "name": "SMART_ACTION_DESPAWN_SPAWNGROUP",
+        "parameters": [
+            {
+                "type": "Parameter",
+                "name": "GroupID"
+            },
+            {
+                "type": "Parameter",
+                "name": "minDelay"
+            },
+            {
+                "type": "Parameter",
+                "name": "maxDelay"
+            },
+            {
+                "type": "Parameter",
+                "name": "spawnflags"
+            }
+        ],
+        "description": "{target}: Stops playing scene with Id: {pram1}"
+    },
+        
+    {
+        "id": 133,
+        "name": "SMART_ACTION_RESPAWN_BY_SPAWNID",
+        "parameters": [
+            {
+                "type": "SwitchParameter",
+                "name": "SpawnType",
+                "values": {
+                  "0": { "name": "NPC" },
+                  "1": { "name": "GameObject" }
+                }
+            },
+            {
+                "type": "Parameter",
+                "name": "SpawnId (DB GUID)"
+            }
+        ],
+        "description": "Use to respawn npcs and gobs, the target in this case is always=1 and only a single unit could be a target via the spawnId (action_param1, action_param2)"
+    },
+        
+    {
+        "id": 134,
+        "name": "SMART_ACTION_INVOKER_CAST",
+        "parameters": [
+            {
+                "type": "SpellParameter",
+                "name": "SpellID"
+            },
+            {
+                "type": "CastFlagsParameter",
+                "name": "CastFlags"
+            },
+            {
+                "type": "Parameter",
+                "name": "triggeredFlags"
+            }
+        ],
+        "description": "if avaliable, last used invoker will cast spellId: {pram1} with castFlags on {target}"
+    },
+        
+    {
+        "id": 135,
+        "name": "SMART_ACTION_PLAY_CINEMATIC",
+        "parameters": [
+            {
+                "type": "Parameter",
+                "name": "Entry"
+            },
+            {
+                "type": "Parameter",
+                "name": "Cinematic"
+            }
+        ],
+        "description": "{target}: Plays Cinematic with Entry: {pram1} and Cinematic {pram2}"
+    },
+        
+    {
+        "id": 136,
+        "name": "SMART_ACTION_SET_MOVEMENT_SPEED",
+        "parameters": [
+            {
+                "type": "Parameter",
+                "name": "MovementType"
+            },
+            {
+                "type": "Parameter",
+                "name": "SpeedInteger"
+            },
+            {
+                "type": "Parameter",
+                "name": "SpeedFraction"
+            }
+        ],
+        "description": "{target}: Changes movement speed"
+    },  
+        
+    {
+        "id": 137,
+        "name": "SMART_ACTION_PLAY_SPELL_VISUAL_KIT",
+        "parameters": [
+            {
+                "type": "Parameter",
+                "name": "SpellVisualKitId"
+            }
+        ],
+        "description": "{target}: Plays SpellVisual with SpellVisualKitId: {pram1}"
     }
 
 ]
