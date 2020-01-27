@@ -92,9 +92,9 @@ namespace VisualSAIStudio
                 }
             }
 
-            /*CurrentAction(this, new LoadingEventArgs("area triggers"));
-            dbString.Add(StorageType.AreaTrigger, new ClientDataDBC("AreaTrigger.dbc", 
-                    delegate(BinaryReader br,Dictionary<int, string> strings )
+            CurrentAction(this, new LoadingEventArgs("area triggers"));
+            dbString.Add(StorageType.AreaTrigger, new ClientDataDBC("AreaTrigger.dbc",
+                    delegate (BinaryReader br, Dictionary<int, string> strings)
                     {
                         StringBuilder sb = new StringBuilder();
                         br.ReadInt32();
@@ -108,7 +108,7 @@ namespace VisualSAIStudio
                         return sb.ToString();
                     }            
                 ));
-            dbString.Add(StorageType.AreaTriggerWithSAI, new ClientDataDB<string>("entry", "ScriptName", "areatrigger_scripts", "ScriptName = \"SmartTrigger\""));*/
+            dbString.Add(StorageType.AreaTriggerWithSAI, new ClientDataDB<string>("entry", "ScriptName", "areatrigger_scripts", "ScriptName = \"SmartTrigger\""));
 
             CurrentAction(this, new LoadingEventArgs("game events"));
             dbString.Add(StorageType.GameEvent, new ClientDataDB<string>("EventEntry", "description", "game_event"));
@@ -398,9 +398,37 @@ namespace VisualSAIStudio
 
             Load(filename);
         }
+        public ClientDataDBC(string filename, Func<BinaryReader, Dictionary<int, string>, string> func)
+        {
+            Load(filename, func);
+        }
         public ClientDataDBC(string filename, int id_name_to_skip, Func<BinaryReader,Dictionary<int, string>, List<ColumnMeta>, Tuple<Int32, string>> func)
         {
             Load(filename, func);
+        }
+        private void Load(string filename, Func<BinaryReader, Dictionary<int, string>, string> func)
+        {
+            if (filename != "AreaTrigger.dbc")
+                return;
+
+            if (!File.Exists(Properties.Settings.Default.DBC + "\\" + filename))
+                return;
+            IClientDBReader m_reader = DBReaderFactory.GetReader(Properties.Settings.Default.DBC + "\\" + filename);
+
+            if (m_reader.StringTable != null)
+            {
+                int i = 0;
+                foreach (var br in m_reader.Rows) // Add rows
+                {
+                    if (func != null)
+                    {
+                        int id = br.ReadInt32();
+                        values[id] = func(br, m_reader.StringTable);
+                    }
+                    else
+                        return;
+                }
+            }
         }
         private void Load(string filename, Func<BinaryReader, Dictionary<int, string>, List<ColumnMeta>, Tuple<Int32, string>> func = null)
         {
@@ -423,7 +451,10 @@ namespace VisualSAIStudio
 
                     Tuple<Int32, string> idAndName;
                     if (func != null)
+                    {
                         idAndName = func(br, m_reader.StringTable, meta);
+                        values[idAndName.Item1] = idAndName.Item2;
+                    }
                     else if (m_reader is DBCReader || m_reader is DB2Reader)
                     {
                         int id = br.ReadInt32();
