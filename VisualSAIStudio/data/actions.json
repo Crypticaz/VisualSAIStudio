@@ -18,6 +18,10 @@
                 "type": "Parameter",
                 "name": "Delay",
                 "description": "Duration to wait before TEXT_OVER event is triggered"
+            },
+			{
+                "type": "BoolParameter",
+                "name": "UseTalkTarget",
             }
         ],
         "description": "{target}: Talk {pram1}"
@@ -850,18 +854,6 @@
     },
 
     {
-        "id": 46,
-        "name": "SMART_ACTION_MOVE_FORWARD",
-        "parameters": [
-            {
-                "type": "Parameter",
-                "name": "Distance"
-            }
-        ],
-        "description": "Self: Move forward {pram1} yards"
-    },
-
-    {
         "id": 47,
         "name": "SMART_ACTION_SET_VISIBILITY",
         "parameters": [
@@ -1203,6 +1195,18 @@
             {
                 "type": "Parameter",
                 "name": "PointId"
+            },
+			{
+                "type": "BoolParameter",
+                "name": "IsTransport"
+            },
+			{
+                "type": "BoolParameter",
+                "name": "DisablePathfinding"
+            },
+			{
+                "type": "Parameter",
+                "name": "ContactDistance"
             }
         ],
         "description": "Self: Move to {targetid:choose(8):position {targetcoords}|{target}} (point id {pram1})"
